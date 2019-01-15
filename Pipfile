@@ -8,6 +8,8 @@ django = "*"
 django-rest-framework = "*"
 django-cors-headers = "*"
 "argon2" = "*"
+"psycopg2" = "*"
+"argon2-cffi" = "*"
 
 [dev-packages]
 

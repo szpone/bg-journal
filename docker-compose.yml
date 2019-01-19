@@ -3,15 +3,12 @@ version: '3'
 services:
   db:
     image: postgres
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=bgjournal
-    ports:
-      - "54332:5432"
   web:
     build: ""
     ports:
       - "8000:8000"
     depends_on:
       - db
+
+
+

@@ -1,14 +1,20 @@
-version: '3'
+#version: '3'
+#
+#services:
+#  db:
+#    image: postgres
+#  web:
+#    build: ""
+#    ports:
+#      - "8000:8000"
+#    depends_on:
+#      - db
 
+
+
+version: "2"
 services:
-  db:
-    image: postgres
   web:
-    build: ""
+    build: .
     ports:
       - "8000:8000"
-    depends_on:
-      - db
-
-
-

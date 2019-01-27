@@ -81,7 +81,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'bgjournal.wsgi.application'
 
 
-# Database
+# Databasef
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
 DATABASES = {

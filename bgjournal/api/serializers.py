@@ -18,10 +18,11 @@ class BoardGameSerializer(serializers.ModelSerializer):
 class MatchSerializer(serializers.ModelSerializer):
     class Meta:
         model = Match
-        fields = '__all__'
+        fields = ('board_game_name', 'victory', 'points', 'scenario', 'players')
 
 
-class ExpansionSerializer(serializers.ModelSerializer)
+
+class ExpansionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Expansion
         fields = '__all__'

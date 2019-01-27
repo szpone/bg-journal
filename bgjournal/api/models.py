@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -20,6 +21,6 @@ class Match(models.Model):
     board_game = models.ForeignKey(BoardGame, on_delete=models.CASCADE)
     players = models.ManyToManyField('auth.User', related_name='players')
 
-
-
-
+    @property
+    def board_game_name(self):
+        return self.board_game.name

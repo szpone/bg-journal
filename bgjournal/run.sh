@@ -1,4 +1,4 @@
 #!/bin/bash
 
-./manage.py makemigrations
-./manage.py migrate
+oython3 manage.py makemigrations
+python3 manage.py migrate

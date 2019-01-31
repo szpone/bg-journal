@@ -6,5 +6,4 @@ RUN pip install pipenv
 ADD Pipfile /bg-journal/
 RUN pipenv install
 ADD . /bg-journal/
-#CMD python3 manage.py runserver 0.0.0.0:8000
 CMD ["./run.sh"]

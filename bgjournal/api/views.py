@@ -7,7 +7,7 @@ from rest_framework.response import Response
 # Create your views here.
 
 
-class UserListView(ListAPIView):
+class UserListView(ListCreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 

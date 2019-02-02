@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker build -t bgjournal/api .
+docker build -t nikolanna/bgjournal-api .

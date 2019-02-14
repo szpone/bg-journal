@@ -26,7 +26,7 @@ SECRET_KEY = '%qn*qcxg+xswtgws9tww@qy1eeu4y$v^*x(3#f3q#=763jaj^m'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['nikola.pwmarcz.pl']
 
 
 # Application definition
@@ -83,26 +83,26 @@ WSGI_APPLICATION = 'bgjournal.wsgi.application'
 
 # Databasef
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
+#
+# DATABASES = {
+#       'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'bgjournal',
+#         'USER': 'postgres',
+#         'HOST': 'localhost',
+#         'PORT': '5432',
+#     }
+# }
 
 DATABASES = {
       'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'bgjournal',
         'USER': 'postgres',
-        'HOST': 'localhost',
+        'HOST': 'postgres',
         'PORT': '5432',
     }
 }
-
-# DATABASES = {
-#       'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'bgjournal',
-#         'USER': 'postgres',
-#         'HOST': 'postgres',
-#         'PORT': '5432',
-#     }
-# }
 
 
 

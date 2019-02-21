@@ -14,11 +14,7 @@ import datetime
 import os
 import etcd
 
-client = etcd.Client()
-client = etcd.Client(port=2379)
-client = etcd.Client(host='127.0.0.1', port=2380)
-client = etcd.Client(host=(('127.0.0.1', 2379), ('127.0.0.1', 2380)), allow_reconnect=True)
-client = etcd.Client(host='nikola.pwmarcz.pl', protocol='https', port=443, version_prefix='/etcd')
+client = etcd.Client(host='etcd', port=2379, allow_reconnect=True)
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

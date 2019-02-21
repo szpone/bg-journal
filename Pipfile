@@ -12,6 +12,7 @@ django-cors-headers = "*"
 "argon2-cffi" = "*"
 djangorestframework-jwt = "*"
 "psycopg2-binary" = "*"
+python-etcd = "*"
 
 [dev-packages]
 

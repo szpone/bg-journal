@@ -48,7 +48,8 @@ INSTALLED_APPS = [
 
     'api',
     'rest_framework',
-    'corsheaders'
+    'corsheaders',
+    'python-etcd'
 ]
 
 MIDDLEWARE = [

@@ -16,9 +16,9 @@ import etcd
 
 client = etcd.Client(host='etcd', port=2379, allow_reconnect=True)
 secret_key = client.read('django').value
-db_user = client.read('/db_data/user')
-db_name = client.read('/db_data/name')
-db_pswd = client.read('db_data/pswd')
+db_user = client.read('/db_data/user').value
+db_name = client.read('/db_data/name').value
+db_pswd = client.read('db_data/pswd').value
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -64,7 +64,7 @@ MIDDLEWARE = [
 
 CORS_ORIGIN_ALLOW_ALL = True
 
-CSRF_TRUSTED_ORIGINS = []
+CSRF_TRUSTED_ORIGINS = ['http://localhost:8080']
 
 ROOT_URLCONF = 'bgjournal.urls'
 

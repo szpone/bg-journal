@@ -18,6 +18,7 @@ client = etcd.Client(host='etcd', port=2379, allow_reconnect=True)
 secret_key = client.read('django').value
 db_user = client.read('/db_data/user')
 db_name = client.read('/db_data/name')
+db_pswd = client.read('db_data/pswd')
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -33,8 +34,7 @@ SECRET_KEY = secret_key
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# ALLOWED_HOSTS = ['nikola.pwmarcz.pl']
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['nikola.pwmarcz.pl']
 
 # Application definition
 
@@ -65,7 +65,6 @@ MIDDLEWARE = [
 CORS_ORIGIN_ALLOW_ALL = True
 
 CSRF_TRUSTED_ORIGINS = ['http://localhost:8080']
-
 
 ROOT_URLCONF = 'bgjournal.urls'
 
@@ -106,6 +105,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': db_name,
         'USER': db_user,
+        'PASSWORD': db_pswd,
         'HOST': 'postgres',
         'PORT': '5432',
     }

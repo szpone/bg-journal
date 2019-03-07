@@ -15,10 +15,10 @@ import os
 import etcd
 
 client = etcd.Client(host='etcd', port=2379, allow_reconnect=True)
-secret_key = client.read('django').value
+secret_key = client.read('/django').value
 db_user = client.read('/db_data/user').value
 db_name = client.read('/db_data/name').value
-db_pswd = client.read('db_data/pswd').value
+db_pswd = client.read('/db_data/pswd').value
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)

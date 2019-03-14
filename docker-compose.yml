@@ -2,28 +2,63 @@ version: "3.6"
 
 services:
   postgres:
-    image: "postgres:11-alpine"
-    environment:
-      - "POSTGRES_DB=bgjournal"
-      - "POSTGRES_USER=postgres"
+    image: "nikolanna/custom-postgres"
+    depends_on:
+      - etcd
+    ports:
+      - "5432:5432"
     volumes:
       - "postgres-data:/var/lib/postgresql/data"
     networks:
       - persistence
+      - app-tier
+  haproxy:
+    image: "haproxy"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - type: bind
+        source: ${PWD}/config/config.cfg
+        target: /usr/local/etc/haproxy/haproxy.cfg
+      - type: bind
+        source: ${PWD}/config/certs
+        target: /etc/haproxy/certs
+    networks:
+      - persistence
+
+  etcd:
+    image: "bitnami/etcd:latest"
+    environment:
+      - ALLOW_NONE_AUTHENTICATION=yes
+      - ETCD_ADVERTISE_CLIENT_URLS=http://etcd:2379
+    ports:
+      - "2379:2379"
+      - "2380:2380"
+    networks:
+      - app-tier
 
   bgjournal:
-    image: "bgjournal/api"
-    ports:
-      - "8000:8000"
-    volumes:
-      - "./files/bgjournal/settings.py:/bg-journal/bgjournal/settings.py"
+    image: "nikolanna/bgjournal-api"
     depends_on:
       - postgres
+      - etcd
+    networks:
+      - persistence
+      - app-tier
+
+  journal-frontend:
+    image: "nikolanna/bgjournal-ui"
     networks:
       - persistence
 
 networks:
   persistence: {}
+  app-tier:
+    driver: bridge
 
 volumes:
   postgres-data: {}
+
+
+

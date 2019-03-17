@@ -14,11 +14,11 @@ import datetime
 import os
 import etcd
 
-client = etcd.Client(host='etcd', port=2379, allow_reconnect=True)
-secret_key = client.read('/django').value
-db_user = client.read('/db_data/user').value
-db_name = client.read('/db_data/name').value
-db_pswd = client.read('/db_data/pswd').value
+# client = etcd.Client(host='etcd', port=2379, allow_reconnect=True)
+# secret_key = client.read('/django').value
+# db_user = client.read('/db_data/user').value
+# db_name = client.read('/db_data/name').value
+# db_pswd = client.read('/db_data/pswd').value
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -29,12 +29,17 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = secret_key
+# SECRET_KEY = secret_key
+
+SECRET_KEY = '1111'
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['nikola.pwmarcz.pl']
+# ALLOWED_HOSTS = ['nikola.pwmarcz.pl']
+
+ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -87,14 +92,16 @@ TEMPLATES = [
 WSGI_APPLICATION = 'bgjournal.wsgi.application'
 
 
-# Databasef
+# Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
+
 
 # DATABASES = {
 #       'default': {
 #         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'bgjournal',
-#         'USER': 'postgres',
+#         'NAME': db_name,
+#         'USER': db_user,
+#         'PASSWORD': db_pswd,
 #         'HOST': 'localhost',
 #         'PORT': '5432',
 #     }
@@ -103,10 +110,9 @@ WSGI_APPLICATION = 'bgjournal.wsgi.application'
 DATABASES = {
       'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': db_name,
-        'USER': db_user,
-        'PASSWORD': db_pswd,
-        'HOST': 'postgres',
+        'NAME': 'bgjournal',
+        'USER': 'postgres',
+        'HOST': 'localhost',
         'PORT': '5432',
     }
 }
@@ -138,6 +144,8 @@ PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
 ]
 
+
+AUTH_USER_MODEL = 'api.User'
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/

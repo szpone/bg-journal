@@ -20,7 +20,6 @@ class UserSerializer(serializers.ModelSerializer):
         return data
 
     def create(self, validated_data):
-        # user = super().create(validated_data)
         user = User.objects.create(email=validated_data.get('email'),
                                    username=validated_data.get('username'))
         user.set_password(validated_data['password'])

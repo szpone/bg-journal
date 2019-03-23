@@ -5,12 +5,13 @@ from rest_framework import serializers
 User = get_user_model()
 
 
-class UserSerializer(serializers.ModelSerializer):
+class UserCreateSerializer(serializers.ModelSerializer):
     confirm_password = serializers.CharField(max_length=128, write_only=True)
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'password', 'email', 'first_name', 'last_name', 'group', 'bio', 'confirm_password')
+        fields = ('username', 'password', 'email', 'first_name', 'last_name', 'bio', 'confirm_password')
+
 
     def validate(self, data):
         password = data.get('password')
@@ -27,11 +28,10 @@ class UserSerializer(serializers.ModelSerializer):
         user.save()
         return user
 
-
 class BoardGameSerializer(serializers.ModelSerializer):
     class Meta:
         model = BoardGame
-        fields = ('name', 'edition')
+        fields = ('name', 'edition', 'id')
 
 
 class MatchSerializer(serializers.ModelSerializer):

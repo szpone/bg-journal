@@ -7,8 +7,6 @@ from django.utils import timezone
 
 class User(AbstractUser):
     bio = models.TextField(max_length=500, blank=True)
-    group = models.IntegerField(null=True, blank=True)
-    # confirm_password = models.CharField(max_length=128)
 
 
 class BoardGame(models.Model):

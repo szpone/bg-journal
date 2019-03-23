@@ -1,7 +1,8 @@
-from rest_framework.generics import ListAPIView, ListCreateAPIView
+from rest_framework.generics import ListAPIView, ListCreateAPIView, CreateAPIView
 from django.contrib.auth import get_user_model
 from .models import BoardGame, Match, Expansion
-from .serializers import (UserSerializer, BoardGameSerializer, MatchSerializer, ExpansionSerializer)
+from .serializers import (BoardGameSerializer, MatchSerializer, ExpansionSerializer,
+                          UserCreateSerializer)
 from django.db.models import Count
 
 User = get_user_model()
@@ -9,13 +10,12 @@ User = get_user_model()
 # Create your views here.
 
 
-class UserListView(ListCreateAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
+class UserCreateView(CreateAPIView):
+    serializer_class = UserCreateSerializer
 
 
 class BoardGameListView(ListAPIView):
-    queryset = BoardGame.objects.select_related('expansion')
+    queryset = BoardGame.objects.all()
     serializer_class = BoardGameSerializer
 
 

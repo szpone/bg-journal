@@ -42,8 +42,20 @@ class ViewTestApi(APITestCase):
                                                       "board_game": self.board_game.id,
                                                       "expansion": self.expansion.id,
                                                       "players": [self.player.id]})
-        print(response)
         self.assertEqual(response.status_code, 201)
+
+    def test_get_top_three(self):
+        response = self.client.get('/api/matches/top-three/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_post_top_three(self):
+        response = self.client.post('/api/matches/top-three/', {"victory": False,
+                                                      "points": 100,
+                                                      "scenario": "testscenario",
+                                                      "board_game": self.board_game.id,
+                                                      "expansion": self.expansion.id,
+                                                      "players": [self.player.id]})
+        self.assertEqual(response.status_code, 405)
 
     def test_create_user(self):
         self.client.logout()

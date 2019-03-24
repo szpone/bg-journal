@@ -15,6 +15,7 @@ djangorestframework-jwt = "*"
 python-etcd = "*"
 ipython = "*"
 pytest-django = "*"
+django-environ = "*"
 
 [dev-packages]
 

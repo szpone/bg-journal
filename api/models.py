@@ -8,6 +8,9 @@ from django.utils import timezone
 class User(AbstractUser):
     bio = models.TextField(max_length=500, blank=True)
 
+    def __str__(self):
+        return self.username
+
 
 class BoardGame(models.Model):
     name = models.CharField(max_length=128)

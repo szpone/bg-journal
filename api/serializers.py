@@ -41,11 +41,18 @@ class BoardGameSerializer(serializers.ModelSerializer):
 
 
 class MatchSerializer(serializers.ModelSerializer):
+    players_names = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Match
-        fields = ('id', 'victory', 'points', 'scenario', 'players', 'board_game_name',
+        fields = ('id', 'victory', 'points', 'scenario', 'players', 'players_names', 'board_game_name',
                   'board_game', 'expansion')
+
+    def get_players_names(self, obj):
+        names = []
+        for player in obj.players.all():
+            names.append(player.username)
+        return names
 
 
 class ExpansionSerializer(serializers.ModelSerializer):

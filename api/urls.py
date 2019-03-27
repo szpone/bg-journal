@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import (BoardGameListView, MatchListView, ExpansionListView, TopThreeListView, UserCreateView, UserListView)
+from .views import (BoardGameListView, MatchListView, ExpansionListView, TopThreeListView, UserCreateView, UserListView, MatchEditDeleteView)
 from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token, verify_jwt_token
 
 urlpatterns = [
@@ -7,6 +7,7 @@ urlpatterns = [
     path('users/register/', UserCreateView.as_view(), name="register"),
     path('boardgames/', BoardGameListView.as_view(), name="boardgames"),
     path('matches/', MatchListView.as_view(), name="matches"),
+    path('matches/<int:pk>/', MatchEditDeleteView.as_view(), name="match"),
     path('matches/top-three/', TopThreeListView.as_view(), name="top-three"),
     path('expansions/', ExpansionListView.as_view(), name="expansions"),
     path('auth/obtain_token/', obtain_jwt_token),

@@ -1,8 +1,12 @@
-from rest_framework.generics import ListAPIView, ListCreateAPIView, CreateAPIView
+from rest_framework.generics import ListAPIView, ListCreateAPIView, CreateAPIView, RetrieveUpdateDestroyAPIView
 from django.contrib.auth import get_user_model
 from .models import BoardGame, Match, Expansion
 from .serializers import (BoardGameSerializer, MatchSerializer, ExpansionSerializer,
                           UserCreateSerializer, UserListSerializer)
+from django.shortcuts import get_object_or_404
+from rest_framework import viewsets
+from rest_framework.response import Response
+
 from django.db.models import Count
 
 User = get_user_model()
@@ -25,6 +29,16 @@ class BoardGameListView(ListAPIView):
 
 
 class MatchListView(ListCreateAPIView):
+    queryset = Match.objects.select_related('board_game', 'expansion').prefetch_related('players')
+    serializer_class = MatchSerializer
+
+    def get_queryset(self):
+        qs = self.queryset
+        user = self.request.user
+        return qs.filter(players=user)
+
+
+class MatchEditDeleteView(RetrieveUpdateDestroyAPIView):
     queryset = Match.objects.select_related('board_game', 'expansion').prefetch_related('players')
     serializer_class = MatchSerializer
 

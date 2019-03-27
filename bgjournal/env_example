@@ -1,0 +1,24 @@
+DEBUG=on
+ALLOWED_HOSTS=[]
+
+DATABASES_DEV=DATABASES = {
+       'default': {
+         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+         'NAME': db_name,
+         'USER': db_user,
+         'PASSWORD': db_pswd,
+         'HOST': 'postgres',
+         'PORT': '5432',
+     }
+ }
+
+DATABASES_LOCAL=DATABASES = {
+      'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'bgjournal',
+        'USER': 'postgres',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
+}
+# DJANGO_SETTINGS_MODULE=api.settings

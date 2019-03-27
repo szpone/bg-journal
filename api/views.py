@@ -13,6 +13,7 @@ User = get_user_model()
 class UserCreateView(CreateAPIView):
     serializer_class = UserCreateSerializer
 
+
 class UserListView(ListAPIView):
     serializer_class = UserListSerializer
     queryset = User.objects.all()

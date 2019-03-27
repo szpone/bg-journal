@@ -12,7 +12,6 @@ class UserCreateSerializer(serializers.ModelSerializer):
         model = User
         fields = ('username', 'password', 'email', 'first_name', 'last_name', 'bio', 'confirm_password')
 
-
     def validate(self, data):
         password = data.get('password')
         confirm_password = data.get('confirm_password')
@@ -26,23 +25,30 @@ class UserCreateSerializer(serializers.ModelSerializer):
                                    username=validated_data.get('username'))
         user.set_password(validated_data.get('password'))
         user.save()
-        return user
+        return
+
+
+class UserListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'username')
+
 
 class BoardGameSerializer(serializers.ModelSerializer):
     class Meta:
         model = BoardGame
-        fields = ('name', 'edition', 'id')
+        fields = ('id', 'name', 'edition', 'id')
 
 
 class MatchSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Match
-        fields = ('victory', 'points', 'scenario', 'players', 'board_game_name',
+        fields = ('id', 'victory', 'points', 'scenario', 'players', 'board_game_name',
                   'board_game', 'expansion')
 
 
 class ExpansionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Expansion
-        fields = ('name', 'board_game_name', 'board_game')
+        fields = ('id', 'name', 'board_game_name', 'board_game')

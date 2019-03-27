@@ -65,3 +65,11 @@ class ViewTestApi(APITestCase):
                                                             "email": "test@test.com"})
         self.assertEqual(response.status_code, 301)
 
+    def test_get_user_list(self):
+        response = self.client.get('/api/users/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_post_user_list(self):
+        response = self.client.post('/api/users/')
+        self.assertEqual(response.status_code, 405)
+

@@ -2,7 +2,7 @@ from rest_framework.generics import ListAPIView, ListCreateAPIView, CreateAPIVie
 from django.contrib.auth import get_user_model
 from .models import BoardGame, Match, Expansion
 from .serializers import (BoardGameSerializer, MatchSerializer, ExpansionSerializer,
-                          UserCreateSerializer)
+                          UserCreateSerializer, UserListSerializer)
 from django.db.models import Count
 
 User = get_user_model()
@@ -12,6 +12,10 @@ User = get_user_model()
 
 class UserCreateView(CreateAPIView):
     serializer_class = UserCreateSerializer
+
+class UserListView(ListAPIView):
+    serializer_class = UserListSerializer
+    queryset = User.objects.all()
 
 
 class BoardGameListView(ListAPIView):

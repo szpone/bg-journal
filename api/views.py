@@ -1,7 +1,12 @@
-from rest_framework.generics import ListAPIView, ListCreateAPIView
+from rest_framework.generics import (ListAPIView, ListCreateAPIView, CreateAPIView, RetrieveUpdateDestroyAPIView,
+                                     RetrieveUpdateAPIView, UpdateAPIView)
 from django.contrib.auth import get_user_model
 from .models import BoardGame, Match, Expansion
-from .serializers import (UserSerializer, BoardGameSerializer, MatchSerializer, ExpansionSerializer)
+from .serializers import (BoardGameSerializer, MatchSerializer, ExpansionSerializer,
+                          UserCreateSerializer, UserListSerializer, UserChangePasswordSerializer, UserEditSerializer)
+from rest_framework.response import Response
+from rest_framework import status, permissions
+
 from django.db.models import Count
 
 User = get_user_model()
@@ -9,19 +14,59 @@ User = get_user_model()
 # Create your views here.
 
 
-class UserListView(ListCreateAPIView):
+class UserCreateView(CreateAPIView):
+    serializer_class = UserCreateSerializer
+
+
+class UserListView(ListAPIView):
+    serializer_class = UserListSerializer
     queryset = User.objects.all()
-    serializer_class = UserSerializer
+    permission_classes = (permissions.IsAuthenticated, )
+
+
+class UserEditView(RetrieveUpdateAPIView):
+    serializer_class = UserEditSerializer
+    queryset = User.objects.all()
+    permission_classes = (permissions.IsAuthenticated, )
+
+    def get(self, request, *args, **kwargs):
+        if self.request.user.id == kwargs['pk'] or self.request.user.is_superuser:
+            serializer = UserEditSerializer(self.request.user)
+        else:
+            return Response(status=status.HTTP_403_FORBIDDEN)
+        return Response(serializer.data)
+
+
+class UserChangePasswordView(UpdateAPIView):
+    serializer_class = UserChangePasswordSerializer
+    queryset = User.objects.all()
+    permission_classes = (permissions.IsAuthenticated, )
+
+    def get_object(self, queryset=None):
+        return self.request.user
 
 
 class BoardGameListView(ListAPIView):
-    queryset = BoardGame.objects.select_related('expansion')
+    queryset = BoardGame.objects.all()
     serializer_class = BoardGameSerializer
+    permission_classes = (permissions.IsAuthenticated, )
 
 
 class MatchListView(ListCreateAPIView):
     queryset = Match.objects.select_related('board_game', 'expansion').prefetch_related('players')
     serializer_class = MatchSerializer
+    permission_classes = (permissions.IsAuthenticated, )
+
+    def get_queryset(self):
+        qs = self.queryset
+        user = self.request.user
+        return qs.filter(players=user)
+
+
+class MatchEditDeleteView(RetrieveUpdateDestroyAPIView):
+    queryset = Match.objects.select_related('board_game', 'expansion').prefetch_related('players')
+    serializer_class = MatchSerializer
+    permission_classes = (permissions.IsAuthenticated, )
 
     def get_queryset(self):
         qs = self.queryset
@@ -32,11 +77,13 @@ class MatchListView(ListCreateAPIView):
 class ExpansionListView(ListAPIView):
     queryset = Expansion.objects.select_related('board_game')
     serializer_class = ExpansionSerializer
+    permission_classes = (permissions.IsAuthenticated, )
 
 
 class TopThreeListView(ListAPIView):
     queryset = Match.objects.select_related('board_game').prefetch_related('players')
     serializer_class = MatchSerializer
+    permission_classes = (permissions.IsAuthenticated, )
 
     def get_queryset(self):
         qs = self.queryset

@@ -12,9 +12,15 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 
 import datetime
 import os
+
+import environ
+root = environ.Path(__file__) - 3 # three folder back (/a/b/c/ - 3 = /)
+env = environ.Env(DEBUG=(bool, False),) # set default values and casting
+environ.Env.read_env() # reading .env file
+
 import etcd
 
-client = etcd.Client(host='etcd', port=2379, allow_reconnect=True)
+client = etcd.Client(host='172.30.0.1', port=2379, allow_reconnect=True)
 secret_key = client.read('/django').value
 db_user = client.read('/db_data/user').value
 db_name = client.read('/db_data/name').value
@@ -29,13 +35,14 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = secret_key
+# SECRET_KEY = secret_key
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = ['nikola.pwmarcz.pl']
+
 
 # Application definition
 
@@ -98,7 +105,7 @@ DATABASES = {
         'NAME': db_name,
         'USER': db_user,
         'PASSWORD': db_pswd,
-        'HOST': 'localhost',
+        'HOST': 'postgres',
         'PORT': '5432',
     }
 }
@@ -156,4 +163,17 @@ JWT_AUTH = {
     'JWT_ALLOW_REFRESH': True,
     'JWT_EXPIRATION_DELTA': datetime.timedelta(hours=1),
     'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=7),
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 100,
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ),
 }

@@ -4,10 +4,8 @@ from django.contrib.auth import get_user_model
 from .models import BoardGame, Match, Expansion
 from .serializers import (BoardGameSerializer, MatchSerializer, ExpansionSerializer,
                           UserCreateSerializer, UserListSerializer, UserChangePasswordSerializer, UserEditSerializer)
-from django.shortcuts import get_object_or_404
-from rest_framework import viewsets
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, permissions
 
 from django.db.models import Count
 
@@ -23,11 +21,13 @@ class UserCreateView(CreateAPIView):
 class UserListView(ListAPIView):
     serializer_class = UserListSerializer
     queryset = User.objects.all()
+    permission_classes = (permissions.IsAuthenticated, )
 
 
 class UserEditView(RetrieveUpdateAPIView):
     serializer_class = UserEditSerializer
     queryset = User.objects.all()
+    permission_classes = (permissions.IsAuthenticated, )
 
     def get(self, request, *args, **kwargs):
         if self.request.user.id == kwargs['pk'] or self.request.user.is_superuser:
@@ -40,6 +40,7 @@ class UserEditView(RetrieveUpdateAPIView):
 class UserChangePasswordView(UpdateAPIView):
     serializer_class = UserChangePasswordSerializer
     queryset = User.objects.all()
+    permission_classes = (permissions.IsAuthenticated, )
 
     def get_object(self, queryset=None):
         return self.request.user
@@ -48,11 +49,13 @@ class UserChangePasswordView(UpdateAPIView):
 class BoardGameListView(ListAPIView):
     queryset = BoardGame.objects.all()
     serializer_class = BoardGameSerializer
+    permission_classes = (permissions.IsAuthenticated, )
 
 
 class MatchListView(ListCreateAPIView):
     queryset = Match.objects.select_related('board_game', 'expansion').prefetch_related('players')
     serializer_class = MatchSerializer
+    permission_classes = (permissions.IsAuthenticated, )
 
     def get_queryset(self):
         qs = self.queryset
@@ -63,6 +66,7 @@ class MatchListView(ListCreateAPIView):
 class MatchEditDeleteView(RetrieveUpdateDestroyAPIView):
     queryset = Match.objects.select_related('board_game', 'expansion').prefetch_related('players')
     serializer_class = MatchSerializer
+    permission_classes = (permissions.IsAuthenticated, )
 
     def get_queryset(self):
         qs = self.queryset
@@ -73,11 +77,13 @@ class MatchEditDeleteView(RetrieveUpdateDestroyAPIView):
 class ExpansionListView(ListAPIView):
     queryset = Expansion.objects.select_related('board_game')
     serializer_class = ExpansionSerializer
+    permission_classes = (permissions.IsAuthenticated, )
 
 
 class TopThreeListView(ListAPIView):
     queryset = Match.objects.select_related('board_game').prefetch_related('players')
     serializer_class = MatchSerializer
+    permission_classes = (permissions.IsAuthenticated, )
 
     def get_queryset(self):
         qs = self.queryset

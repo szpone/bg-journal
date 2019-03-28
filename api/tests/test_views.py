@@ -9,7 +9,7 @@ class ViewTestApi(APITestCase):
 
     def setUp(self):
         self.client = APIClient()
-        self.user = User.objects.create(username="testuser", is_superuser=False, is_active=True)
+        self.user = User.objects.create(username="testuser", is_superuser=False, is_active=True, password="test")
         self.player = User.objects.create(username="player", is_superuser=False, is_active=True)
         self.board_game = BoardGame.objects.create(name="testbg", edition=1)
         self.expansion = Expansion.objects.create(name="testexpansion", board_game=self.board_game)
@@ -79,4 +79,12 @@ class ViewTestApi(APITestCase):
     def test_post_user_list(self):
         response = self.client.post('/api/users/')
         self.assertEqual(response.status_code, 405)
+
+    def test_update_password(self):
+        response = self.client.put('api/users/change-password/{}'.format(self.user.id), {
+            'old_password': 'test',
+            'new_password': 'test123',
+            'confirm_password': 'test123'
+        })
+        self.assertEqual(response.status_code, 201)
 

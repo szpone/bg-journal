@@ -1,11 +1,13 @@
-from rest_framework.generics import ListAPIView, ListCreateAPIView, CreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.generics import (ListAPIView, ListCreateAPIView, CreateAPIView, RetrieveUpdateDestroyAPIView,
+                                     RetrieveUpdateAPIView, UpdateAPIView)
 from django.contrib.auth import get_user_model
 from .models import BoardGame, Match, Expansion
 from .serializers import (BoardGameSerializer, MatchSerializer, ExpansionSerializer,
-                          UserCreateSerializer, UserListSerializer)
+                          UserCreateSerializer, UserListSerializer, UserChangePasswordSerializer, UserEditSerializer)
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
 from rest_framework.response import Response
+from rest_framework import status
 
 from django.db.models import Count
 
@@ -21,6 +23,26 @@ class UserCreateView(CreateAPIView):
 class UserListView(ListAPIView):
     serializer_class = UserListSerializer
     queryset = User.objects.all()
+
+
+class UserEditView(RetrieveUpdateAPIView):
+    serializer_class = UserEditSerializer
+    queryset = User.objects.all()
+
+    def get(self, request, *args, **kwargs):
+        if self.request.user.id == kwargs['pk'] or self.request.user.is_superuser:
+            serializer = UserEditSerializer(self.request.user)
+        else:
+            return Response(status=status.HTTP_403_FORBIDDEN)
+        return Response(serializer.data)
+
+
+class UserChangePasswordView(UpdateAPIView):
+    serializer_class = UserChangePasswordSerializer
+    queryset = User.objects.all()
+
+    def get_object(self, queryset=None):
+        return self.request.user
 
 
 class BoardGameListView(ListAPIView):

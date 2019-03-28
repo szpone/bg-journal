@@ -13,6 +13,9 @@ class ViewTestApi(APITestCase):
         self.player = User.objects.create(username="player", is_superuser=False, is_active=True)
         self.board_game = BoardGame.objects.create(name="testbg", edition=1)
         self.expansion = Expansion.objects.create(name="testexpansion", board_game=self.board_game)
+        self.match = Match.objects.create(board_game=self.board_game, points=0, victory=False)
+        self.match.save()
+        self.match.players.add(self.user)
         self.client.force_authenticate(user=self.user)
 
     def test_get_boardgames(self):
@@ -33,6 +36,10 @@ class ViewTestApi(APITestCase):
 
     def test_get_matches(self):
         response = self.client.get('/api/matches/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_get_match(self):
+        response = self.client.get("/api/matches/{}/".format(self.match.id))
         self.assertEqual(response.status_code, 200)
 
     def test_post_matches(self):

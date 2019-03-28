@@ -28,6 +28,35 @@ class UserCreateSerializer(serializers.ModelSerializer):
         return
 
 
+class UserChangePasswordSerializer(serializers.Serializer):
+    old_password = confirm_password = serializers.CharField(max_length=128, write_only=True)
+    new_password = confirm_password = serializers.CharField(max_length=128, write_only=True)
+    confirm_password = serializers.CharField(max_length=128, write_only=True)
+
+    def validate(self, data):
+        print(data)
+        old_password = data.get('old_password')
+        new_password = data.get('new_password')
+        confirm_password = data.get('confirm_password')
+        if new_password != confirm_password:
+            raise serializers.ValidationError('Passwords do not match')
+        elif old_password == new_password:
+            raise serializers.ValidationError('New password cannot be the same as the old one')
+        data.pop('confirm_password')
+        return data
+
+    def update(self, instance, validated_data):
+        instance.set_password(validated_data['new_password'])
+        instance.save()
+        return instance
+
+
+class UserEditSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('email', 'first_name', 'last_name', 'bio')
+
+
 class UserListSerializer(serializers.ModelSerializer):
     class Meta:
         model = User

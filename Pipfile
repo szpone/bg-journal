@@ -16,6 +16,8 @@ python-etcd = "*"
 ipython = "*"
 pytest-django = "*"
 django-environ = "*"
+django-autofixture = "*"
+factory-boy = "*"
 
 [dev-packages]
 

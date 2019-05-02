@@ -1,0 +1,55 @@
+{
+  "AWSEBDockerrunVersion": 2,
+  "containerDefinitions": [
+    {
+      "name": "bgjournal-api",
+      "image": "nikolanna/bgjournal-api:latest",
+      "memory": 128,
+      "portMappings": [
+        {
+          "hostPort": 8000,
+          "containerPort": 8000
+        }
+      ]
+    },
+    {
+      "name": "bgjournal-ui",
+      "image": "nikolanna/bgjournal-ui:latest",
+      "memory": 128,
+      "portMappings": [
+        {
+          "hostPort": 8080,
+          "containerPort": 8080
+        }
+      ]
+    },
+    {
+      "name": "custom-postgres",
+      "image": "nikolanna/custom-postgres:latest",
+      "memory": 128,
+      "portMappings": [
+        {
+          "hostPort": 5432,
+          "containerPort": 5432
+        }
+      ]
+    },
+    {
+      "name": "etcd",
+      "image": "bitnami/etcd:latest",
+      "memory": 128,
+      "portMappings": [
+        {
+          "hostPort": [
+            2379,
+            2380
+          ],
+          "containerPort": [
+            2379,
+            2380
+          ]
+        }
+      ]
+    }
+  ]
+}

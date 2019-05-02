@@ -18,6 +18,8 @@ pytest-django = "*"
 django-environ = "*"
 django-autofixture = "*"
 factory-boy = "*"
+awsebcli = "*"
+scout-apm = "*"
 
 [dev-packages]
 
